@@ -1,0 +1,7 @@
+python-glade2 
+python-zmq 
+python3-zmq  
+python-elixir 
+python-sqlalchemy 
+python-sqlalchemy-ext 
+python3-sqlalchemy
