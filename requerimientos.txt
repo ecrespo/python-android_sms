@@ -6,4 +6,6 @@ python-sqlalchemy
 python-sqlalchemy-ext 
 python3-sqlalchemy
 android-tools-adb
+python-bson
+python3-bson
 
