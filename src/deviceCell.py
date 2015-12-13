@@ -4,18 +4,21 @@
 """
 Name: privilegios
 Description: Modulo que permite detectar que el dispositivo este conectado y si no se reconfigura, adicionalmente pasa la informacion
-del dispositivo.
+del dispositivo (sólo para dispositivos android por medio de adb)
 
-Version:0.2
+Version:0.3
 License: GPLv3
 Copyright: Copyright (C) Ernesto Nadir Crespo Avila
 Author: Ernesto Nadir Crespo Avila
 Email: ecrespo@gmail.com
 """
-import config
+
+#import config
 from os import path
 from privilegios import ejecutar, AgregarUsuarioSudo
 from commands import getstatusoutput
+from bson import BSON
+import bson
 
 class Cell:
     def __init__(self,celular,configuracion,conexion):
@@ -24,13 +27,13 @@ class Cell:
         los datos del objeto Cell
         """
         self.__celular = celular
-        self.__configparser = config.config(configuracion)
-        self.__conexionAndroid = conexion
-        if self.__celular == "android":
-            self.__adb = self.__configparser.ShowValueItem("android","ruta_adb")
-        elif celular == "v9":
-            self.__dispositivo = self.__configparser.ShowValueItem("dispositivo","dispositivo")
-            self.__baudios = self.__configparser.ShowValueItem("dispositivo","baudios")
+        #self.__configparser = config.config(configuracion)
+        #self.__conexionAndroid = conexion
+        #if self.__celular == "android":
+        #    self.__adb = self.__configparser.ShowValueItem("android","ruta_adb")
+        #elif celular == "v9":
+        #    self.__dispositivo = self.__configparser.ShowValueItem("dispositivo","dispositivo")
+        #    self.__baudios = self.__configparser.ShowValueItem("dispositivo","baudios")
         
         
     def DispositivoNoExiste(self):
@@ -59,53 +62,55 @@ class Cell:
         
     
             
-    def LevantarDispositivo(self):
+    def guardarDispositivo(self,archivobson):
         """
-        Se configura el dispositivo asi sea android o el motorola V9
-        Devuelve 1 si todo se configuro correctamente.
-        Devuelve 0 si no se logro configurar correctamente el dispositivo
+        Se guarda el estado de los dispositivos android en una tabla
         """
-        if self.__celular == "v9":
-            ejecutar("modprobe usbserial vendor=0x22b8 product=0x2b24")
-            resultado = getstatusoutput("ls /dev/ttyUSB*")
-            if resultado[0] <> 0:
-                return 0
-            dispositivo_nuevo = resultado[1].split("\n")[0]
-            if self.__dispositivo <> dispositivo_nuevo:
-                self.__configparser.change("dispositivo","dispositivo",dispositivo_nuevo)
-                self.__dispositivo = dispositivo_nuevo
-                self.__configparser.write()
-            return 1
-        elif self.__celular == "android" and self.__conexionAndroid == "usb":
-            #Se ejecuta adb devices
-            r = getstatusoutput("%s devices" %self.__adb)
-            if r[0] == 0:
-                l = r[1].split("\n")
-                if l[1] <> '':
-                    return 1
-                else:
-                    return 0
-            else:
-                return 0
-        elif self.__celular == "android" and self.__conexionAndroid == "wifi":
-            return 0
+        listaDispositivos = self.detectarDispositivos()
+        f = open(archivobson, 'a+')
+        try:
+            for dispositivo in listaDispositivos:
+                f.write(BSON.encode(dispositivo))
+        finally:
+            f.close()
+
+    def leerDispositivos(self,archivobson):
+        f = open(archivobson, 'rb')
+        result = bson.decode_all(f.read())
+        print result
+
+
         
         
     
-    def InformacionDispositivo(self):
-        if self.__celular == "v9":
-            info_dispositivo = (self.__dispositivo,self.__baudios)
-        elif self.__celular == "android" and self.__conexionAndroid == "usb":
-            r = getstatusoutput("%s devices" %self.__adb)
-            if r[0] == 0:
-                info_dispositivo = ("android","usb",self.__adb,r[1].split("\n")[1].split("\tdevice")[0])
-        elif self.__celular == "android" and self.__conexionAndroid == "wifi":
-            info_dispositivo = ("android","wifi",self.__adb)
-        return info_dispositivo 
+    def detectarDispositivos(self):
+        resultados = ejecutar("adb devices")
+        self.listaDispositivos = []
+        if len(resultados) == 2:
+            return False
+        elif len(resultados) > 2:
+            for dispositivos in resultados[1:-1]:
+                dispositivo = dispositivos[:-1].split("\t")[0]
+                estadoDispositivo = dispositivos[:-1].split("\t")[1]
+                if estadoDispositivo == u'device':
+                    estadoDispositivo = u'activo'
+                else:
+                    estadoDispositivo = u'inactivo'
+                self.listaDispositivos.append({"dispositivo": dispositivo,"estado": estadoDispositivo})
+            return self.listaDispositivos
+        else:
+            return False
+
+        print resultados
             
 
 if __name__ == "__main__":
+    
     cel = Cell("android","./config-sms.conf","usb")
+    print "Deteccion de dispositivo",cel.detectarDispositivos()
+    cel.guardarDispositivo("dispositivos.bson")
+    cel.leerDispositivos("dispositivos.bson")
+    """
     print "iniciando la deteccion"
     if cel.DispositivoNoExiste() == 0 :
         print "El dispositivo existe:",cel.InformacionDispositivo()
@@ -116,4 +121,4 @@ if __name__ == "__main__":
             print "no se pudo detectar el dispositivo android"
         else:
             print "El dispositivo existe:",cel.InformacionDispositivo()
-    
+    """
