@@ -52,7 +52,8 @@ class Cell(object):
         finally:
             f.close()
 
-    def leer_dispositivos(self,archivobson):
+    @staticmethod
+    def leer_dispositivos(archivobson):
         if self.__estado == False: return False
         f = open(archivobson, 'rb')
         result = bson.decode_all(f.read())
