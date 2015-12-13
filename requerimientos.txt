@@ -5,3 +5,5 @@ python-elixir
 python-sqlalchemy 
 python-sqlalchemy-ext 
 python3-sqlalchemy
+android-tools-adb
+
