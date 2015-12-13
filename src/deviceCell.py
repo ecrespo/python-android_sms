@@ -44,10 +44,10 @@ class Cell(object):
         Se guarda el estado de los dispositivos android en una tabla
         """
         if self.__estado == False: return False
-        listaDispositivos = self.detectarDispositivos()
+        lista_dispositivos = self.detectar_dispositivos()
         f = open(archivobson, 'a+')
         try:
-            for dispositivo in listaDispositivos:
+            for dispositivo in lista_dispositivos:
                 f.write(BSON.encode(dispositivo))
         finally:
             f.close()
@@ -64,21 +64,21 @@ class Cell(object):
     
     def detectar_dispositivos(self):
         resultados = ejecutar("adb devices")
-        self.listaDispositivos = []
+        self.lista_dispositivos = []
         if len(resultados) == 2:
             self.__estado = False
             return False
         elif len(resultados) > 2:
             for dispositivos in resultados[1:-1]:
                 dispositivo = dispositivos[:-1].split("\t")[0]
-                estadoDispositivo = dispositivos[:-1].split("\t")[1]
-                if estadoDispositivo == u'device':
-                    estadoDispositivo = u'activo'
+                estado_dispositivo = dispositivos[:-1].split("\t")[1]
+                if estado_dispositivo == u'device':
+                    estado_dispositivo = u'activo'
                 else:
-                    estadoDispositivo = u'inactivo'
-                self.listaDispositivos.append({"dispositivo": dispositivo,"estado": estadoDispositivo})
+                    estado_dispositivo = u'inactivo'
+                self.lista_dispositivos.append({"dispositivo": dispositivo,"estado": estado_dispositivo})
             self.__estado = True
-            return self.listaDispositivos
+            return self.lista_dispositivos
         else:
             self.__estado = False
             return False
