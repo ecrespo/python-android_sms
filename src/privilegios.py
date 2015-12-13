@@ -15,19 +15,7 @@ Email: ecrespo@gmail.com
 
 
 import os 
-import gobject
-import getpass
-from commands import getstatusoutput
 
-
-def ask_pass_func(context, prompt):
-    try:
-        return getpass.getpass("Escriba la clave de administrador (root): ")
-    except KeyboardInterrupt:
-        print
-        err = gobject.GError("keyboard interrupt")
-        
-        raise err
 
 def ejecutar(comando):
     resultado = os.popen("sudo %s" %comando).readlines()
