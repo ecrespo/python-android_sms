@@ -37,33 +37,9 @@ class Cell(object):
         self.__estado = False
         
         
-    def DispositivoNoExiste(self):
-        """Si el dispositivo no existe devuelve 1
-        si existe devuelve 0
-        """
-        if self.__celular == "v9":
-            if not (path.isfile(self.__dispositivo)):
-                return 1
-            else:
-                return 0
-        elif self.__celular == "android" and self.__conexionAndroid == "usb":
-            from commands import getstatusoutput
-            r = getstatusoutput("%s devices" %self.__adb)
-            if r[0] == 0:
-                #Se inicio el dispositivo sin problemas
-                l = r[1].split("\n")
-                if l[1] <> '':
-                    return 0
-                else:
-                    return 1
-            else:
-                return 1
-        elif self.__celular == "android" and self.__conexionAndroid == "wifi":
-            return 1
-        
     
             
-    def guardarDispositivo(self,archivobson):
+    def guardar_dispositivo(self,archivobson):
         """
         Se guarda el estado de los dispositivos android en una tabla
         """
@@ -76,7 +52,7 @@ class Cell(object):
         finally:
             f.close()
 
-    def leerDispositivos(self,archivobson):
+    def leer_dispositivos(self,archivobson):
         if self.__estado == False: return False
         f = open(archivobson, 'rb')
         result = bson.decode_all(f.read())
@@ -86,7 +62,7 @@ class Cell(object):
         
         
     
-    def detectarDispositivos(self):
+    def detectar_dispositivos(self):
         resultados = ejecutar("adb devices")
         self.listaDispositivos = []
         if len(resultados) == 2:
@@ -114,8 +90,8 @@ if __name__ == "__main__":
     
     cel = Cell("android","./config-sms.conf","usb")
     print "Deteccion de dispositivo",cel.detectarDispositivos()
-    cel.guardarDispositivo("dispositivos.bson")
-    cel.leerDispositivos("dispositivos.bson")
+    cel.guardar_dispositivo("dispositivos.bson")
+    cel.leer_dispositivos("dispositivos.bson")
     """
     print "iniciando la deteccion"
     if cel.DispositivoNoExiste() == 0 :
