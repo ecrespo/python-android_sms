@@ -40,9 +40,7 @@ class Cell(object):
     
             
     def guardar_dispositivo(self,archivobson):
-        """
-        Se guarda el estado de los dispositivos android en una tabla
-        """
+        """Se guarda el estado de los dispositivos android en una tabla"""
         if self.__estado == False: return False
         lista_dispositivos = self.detectar_dispositivos()
         f = open(archivobson, 'a+')
@@ -54,6 +52,7 @@ class Cell(object):
 
     @staticmethod
     def leer_dispositivos(archivobson):
+        """Lee del archivo bson los dispositivos almacenados"""
         if self.__estado == False: return False
         f = open(archivobson, 'rb')
         result = bson.decode_all(f.read())
@@ -64,6 +63,7 @@ class Cell(object):
         
     
     def detectar_dispositivos(self):
+        """Detecta los dispositivos android conectados al computador por medio de adb"""
         resultados = ejecutar("adb devices")
         self.lista_dispositivos = []
         if len(resultados) == 2:
