@@ -20,7 +20,7 @@ from commands import getstatusoutput
 from bson import BSON
 import bson
 
-class Cell:
+class Cell(object):
     def __init__(self,celular,configuracion,conexion):
         """
         Se capturan los valores del archivo de configuracion y se asigna los valores a
@@ -34,6 +34,7 @@ class Cell:
         #elif celular == "v9":
         #    self.__dispositivo = self.__configparser.ShowValueItem("dispositivo","dispositivo")
         #    self.__baudios = self.__configparser.ShowValueItem("dispositivo","baudios")
+        self.__estado = False
         
         
     def DispositivoNoExiste(self):
@@ -66,6 +67,7 @@ class Cell:
         """
         Se guarda el estado de los dispositivos android en una tabla
         """
+        if self.__estado == False: return False
         listaDispositivos = self.detectarDispositivos()
         f = open(archivobson, 'a+')
         try:
@@ -75,6 +77,7 @@ class Cell:
             f.close()
 
     def leerDispositivos(self,archivobson):
+        if self.__estado == False: return False
         f = open(archivobson, 'rb')
         result = bson.decode_all(f.read())
         print result
@@ -87,6 +90,7 @@ class Cell:
         resultados = ejecutar("adb devices")
         self.listaDispositivos = []
         if len(resultados) == 2:
+            self.__estado = False
             return False
         elif len(resultados) > 2:
             for dispositivos in resultados[1:-1]:
@@ -97,8 +101,10 @@ class Cell:
                 else:
                     estadoDispositivo = u'inactivo'
                 self.listaDispositivos.append({"dispositivo": dispositivo,"estado": estadoDispositivo})
+            self.__estado = True
             return self.listaDispositivos
         else:
+            self.__estado = False
             return False
 
         print resultados
