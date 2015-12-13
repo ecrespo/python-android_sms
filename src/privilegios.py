@@ -14,8 +14,7 @@ Email: ecrespo@gmail.com
 """
 
 
-
-import gksu2 as gksu
+import os 
 import gobject
 import getpass
 from commands import getstatusoutput
@@ -27,15 +26,14 @@ def ask_pass_func(context, prompt):
     except KeyboardInterrupt:
         print
         err = gobject.GError("keyboard interrupt")
-        err.code = gksu.ERROR_CANCELED
-        err.domain = "libgksu"
+        
         raise err
 
 def ejecutar(comando):
-    ctx = gksu.Context()
-    ctx.set_command(comando)
-    gksu.su_full(ctx, ask_pass=ask_pass_func)
-    
+    resultado = os.popen("sudo %s" %comando).readlines()
+    return resultado
+
+
 def AgregarUsuarioSudo(usuario):
     ejecutar("echo \"%s ALL=(ALL) ALL\" >>  /etc/sudoers " %usuario)
     
@@ -43,5 +41,4 @@ def AgregarUsuarioSudo(usuario):
     
     
 if __name__ == "__main__":
-    ejecutar("ls -la /root")
-    ejecutar("cd /root ; pwd")
+    print ejecutar("adb devices")
