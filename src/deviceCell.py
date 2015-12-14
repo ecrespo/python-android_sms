@@ -21,19 +21,13 @@ from bson import BSON
 import bson
 
 class Cell(object):
-    def __init__(self,celular,configuracion,conexion):
+    def __init__(self,archivo_conf,archivo_bson):
         """
         Se capturan los valores del archivo de configuracion y se asigna los valores a
         los datos del objeto Cell
         """
-        self.__celular = celular
-        #self.__configparser = config.config(configuracion)
-        #self.__conexionAndroid = conexion
-        #if self.__celular == "android":
-        #    self.__adb = self.__configparser.ShowValueItem("android","ruta_adb")
-        #elif celular == "v9":
-        #    self.__dispositivo = self.__configparser.ShowValueItem("dispositivo","dispositivo")
-        #    self.__baudios = self.__configparser.ShowValueItem("dispositivo","baudios")
+        self.__archivo_conf = archivo_conf
+        self.__archivo_bson = archivo_bson
         self.__estado = False
         
         
@@ -50,13 +44,13 @@ class Cell(object):
         finally:
             f.close()
 
-    @staticmethod
-    def leer_dispositivos(archivobson):
+    #@staticmethod
+    def leer_dispositivos(self):
         """Lee del archivo bson los dispositivos almacenados"""
         if self.__estado == False: return False
-        f = open(archivobson, 'rb')
+        f = open(self.__archivo_bson, 'rb')
         result = bson.decode_all(f.read())
-        print result
+        return result
 
 
         
@@ -65,7 +59,7 @@ class Cell(object):
     def detectar_dispositivos(self):
         """Detecta los dispositivos android conectados al computador por medio de adb"""
         resultados = ejecutar("adb devices")
-        self.lista_dispositivos = []
+        self.__lista_dispositivos = []
         if len(resultados) == 2:
             self.__estado = False
             return False
@@ -77,31 +71,19 @@ class Cell(object):
                     estado_dispositivo = u'activo'
                 else:
                     estado_dispositivo = u'inactivo'
-                self.lista_dispositivos.append({"dispositivo": dispositivo,"estado": estado_dispositivo})
+                self.__lista_dispositivos.append({"dispositivo": dispositivo,"estado": estado_dispositivo})
             self.__estado = True
-            return self.lista_dispositivos
+            return self.__lista_dispositivos
         else:
             self.__estado = False
             return False
 
-        print resultados
             
 
 if __name__ == "__main__":
     
-    cel = Cell("android","./config-sms.conf","usb")
+    cel = Cell(".../conf/config-sms.conf","../bd/dispositivos.bson")
     print "Deteccion de dispositivo",cel.detectarDispositivos()
-    cel.guardar_dispositivo("dispositivos.bson")
-    cel.leer_dispositivos("dispositivos.bson")
-    """
-    print "iniciando la deteccion"
-    if cel.DispositivoNoExiste() == 0 :
-        print "El dispositivo existe:",cel.InformacionDispositivo()
-    else:
-        print "levantando el dispositivo"
-        resultado = cel.LevantarDispositivo()
-        if resultado == 0:
-            print "no se pudo detectar el dispositivo android"
-        else:
-            print "El dispositivo existe:",cel.InformacionDispositivo()
-    """
+    cel.guardar_dispositivo()
+    cel.leer_dispositivos()
+    
