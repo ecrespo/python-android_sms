@@ -6,13 +6,16 @@ El esquema del desarrollo se muestra a continuación:
 ![Alt text](./doc/imagenes/esquema.png "Esquema del desarrollo")
 
 
+## Descripción:
 
-Cambios en la configuración del celular:
-Nunca he logrado realizar el envío de SMS por comandos AT con un móvil Android, pero si lo haces como App debes hacer cambios al sistema, debido a que Android tiene un límite de 100 SMS por hora y si pasas el límite, la aplicacion teléfono se apaga. Por ello, para realizar un SMS Gateway App en Android y no sufrir de ese mal, debes realizar lo siguiente:
-- Instalar el binario sqlite3 que me permitira trabajar con la base de datos.
-- La base de datos que posee esta configuracion es la siguiente: /data/data/com.android.providers.settings/databases/settings.db
-- El campo que estoy buscando es el siguiente sms_outgoing_check_max_count
-- Si al campo anterior le quiero eliminar dicha limitacion colocandolo en 0.
-- Y la consulta utilizando el comando sqlite3 es la siguiente:
-INSERT INTO gservices (name, value) VALUES('sms_outgoing_check_max_count', 0);
 
+* Dispositivos: Son los celulares Android que se conectan por medio de un cable USB al computador.
+* adb: Es el comando del SDK de Android que permite acceder a los celulares y desde SL4A envíar SMS.
+* Privilegios: Es el módulo que le da acceso al comando adb para que los dispositivos conectados, se usa el comando sudo para dicho acceso al comando. Se hace necesario configurar sudo en el equipo. Privilegios le da acceso tanto a la detección de los equipos.
+* Android.py: Permite la comunicación entre el módulo de envío de sms y el celular por medio de SL4A. Módulo desarrollado por SL4A.
+* deviceCell: Es un módulo que maneja la detección de los dispositivos y guarda la información en la base de datos con el estado del mismo. 
+* BDD: Es el módulo que habla con la base de datos sqlite por medio del ORM Sqlalchemy.
+* Configuración: Es un módulo que tiene una clase de manejo de archivos de configuración del tipo ini. 
+* Archivo.conf: Maneja la configuración de la aplicación en formato ini.
+* Envío de SMS: Aplicación por consola que facilita el envío de sms quien se comunica por medio de Android.py a los dispositivos.
+* GUI: Es la interfaz gráfica que permite la gestión de agendas de teléfono y el envío de un mensaje de texto o multiples mensajes de texto. 
