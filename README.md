@@ -1,5 +1,10 @@
-# python-android_sms
-Aplicación de envío de SMS con un celular Android conectado al equipo Debian
+# README
+##Aplicación de envío de SMS con un celular Android conectado a equipo con Sistema Operativo  Debian y Canaima
+
+El esquema del desarrollo se muestra a continuación:
+
+![Alt text](./doc/imagenes/esquema.png "Esquema del desarrollo")
+
 
 
 Cambios en la configuración del celular:
