@@ -6,7 +6,7 @@ El esquema del desarrollo se muestra a continuación:
 ![Alt text](./doc/imagenes/esquema.png "Esquema del desarrollo")
 
 
-## Descripción:
+## 1.0. Descripción:
 
 
 * Dispositivos: Son los celulares Android que se conectan por medio de un cable USB al computador.
@@ -19,3 +19,15 @@ El esquema del desarrollo se muestra a continuación:
 * Archivo.conf: Maneja la configuración de la aplicación en formato ini.
 * Envío de SMS: Aplicación por consola que facilita el envío de sms quien se comunica por medio de Android.py a los dispositivos.
 * GUI: Es la interfaz gráfica que permite la gestión de agendas de teléfono y el envío de un mensaje de texto o multiples mensajes de texto. 
+
+## 2.0. Base de datos
+
+La base de datos que se va a utilizar es sqlite junto con el ORM sqlalchemy.
+
+Las tablas que se van a crear son las siguientes:
++ Mensajes: Tabla que registra los mensajes (id, texto).
++ Contactos: Tabla de contactos( id, numcel,grupo, nombre).
++ Bitacora: Tabla que registra el envío de los SMS (id, mensaje,grupo,numcel,timestamp,estatus).
++ Dispositivos: Tabla que registra los dispositivos celulares Android conectados y si están disponibles para ser usados (id, dispositivo, descripcion,estatus).
++ Grupos: Tabla que registra los grupos (id,nombre, descripcion).
+
