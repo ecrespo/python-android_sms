@@ -64,8 +64,8 @@ bitacora_table = schema.Table('bitacora',metadata,
 class Mensajes(object): pass
 class Contactos(object): pass
 class Bitacora(object): pass
-class Dispositivos(object):pass
-class Grupos(object):pass
+class Dispositivos(object): pass
+class Grupos(object): pass
 
 orm.mapper(Contactos, contactos_table)
 orm.mapper(Mensajes,mensajes_table)
