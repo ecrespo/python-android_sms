@@ -5,9 +5,8 @@
 import datetime
 #Se importa schema y tupes de sqlalchemy
 from sqlalchemy import schema, types
-from sqlalchemy import *
 from sqlalchemy import orm
-
+from sqlalchemy.orm import validates
 
 #Se define metadato.
 metadata = schema.MetaData()
@@ -23,6 +22,11 @@ mensajes_table = schema.Table('mensajes',metadata,
     schema.Column('texto',types.Unicode(100),nullable=False),
     )
 
+responsables_table = schema.Table('responsable',metadata,
+    schema.Column('responsable',types.Unicode(100),nullable=False,primary_key=True),
+    schema.Column('correo',types.String(60),key='email',nullable=False),
+    schema.Column('celular',types.String(11),nullable=False)
+    )
 #Definicion  de la tabla mensajes
 dispositivos_table = schema.Table('dispositivos',metadata,
     schema.Column('id',types.Integer,primary_key=True),
@@ -36,9 +40,9 @@ dispositivos_table = schema.Table('dispositivos',metadata,
 #Definicion de la tabla contactos
 contactos_table = schema.Table('contactos',metadata,
     schema.Column('id',types.Integer,primary_key=True),
-    schema.Column('numcel',types.String(11)),
-    schema.Column('grupo',types.Unicode(100)),
-    schema.Column('contacto',types.Unicode(100)),
+    schema.Column('numcel',types.String(11),nullable=False),
+    schema.Column('grupo',types.Unicode(100),nullable=False),
+    schema.Column('contacto',types.Unicode(100),nullable=False),
     )
 
 #Definicion  de la tabla mensajes
@@ -66,10 +70,12 @@ class Contactos(object): pass
 class Bitacora(object): pass
 class Dispositivos(object): pass
 class Grupos(object): pass
+class Responsables(object): pass
 
 orm.mapper(Contactos, contactos_table)
 orm.mapper(Mensajes,mensajes_table)
 orm.mapper(Bitacora,bitacora_table)
 orm.mapper(Dispositivos,dispositivos_table)
 orm.mapper(Grupos,grupos_table)
+orm.mapper(Responsables,responsables_table)
 
