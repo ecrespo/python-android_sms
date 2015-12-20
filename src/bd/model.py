@@ -4,7 +4,7 @@
 #Se importa detatime
 import datetime
 #Se importa schema y tupes de sqlalchemy
-from sqlalchemy import schema, types,ForeignKey
+from sqlalchemy import schema, types,ForeignKey, Boolean,TIMESTAMP
 from sqlalchemy import orm
 from sqlalchemy.orm import validates
 
