@@ -28,7 +28,7 @@ responsables_table = schema.Table('responsable',metadata,
     schema.Column('correo',types.String(60),key='email',nullable=False),
     schema.Column('celular',types.String(11),nullable=False)
     )
-#Definicion  de la tabla mensajes
+#Definicion  de la tabla dispositivos
 dispositivos_table = schema.Table('dispositivos',metadata,
     schema.Column('id',types.Integer,primary_key=True),
     schema.Column('dispositivo',types.Integer),

@@ -30,32 +30,52 @@ def now():
 mensajes = Table(
     'mensajes',metadata,
     Column('id',Integer,primary_key=True),
-    Column('texto',Unicode(144)))
+    Column('texto',Unicode(144))
+    )
+
+responsables = Table(
+    'responsables',metadata,
+    Column('responsable',Unicode(100),nullable=False,primary_key=True),
+    Column('correo',String(60),key='email',nullable=False),
+    Column('celular',types.String(11),nullable=False)
+    )
+
+dispositivos = Table(
+    'dispositivos',metadata,
+    Column('id',Integer,primary_key=True),
+    Column('dispositivo',Integer),
+    Column('descripcion',Unicode(100),nullable=False),
+    Column('estatus',Boolean,default=False)
+    )
 
 
 grupos = Table(
     'grupos',metadata,
     Column('id',Integer,primary_key=True),
-    Column('nombre',Unicode(100)))
+    Column('nombre',Unicode(100)),
+    Column('descripcion',Unicode(100),nullable=False)
+    )
 
 
 contactos = Table(
     'contactos',metadata,
     Column('id',Integer,primary_key=True),
-    Column('numcel',String(11)),
-    Column('grupo',Unicode(100)),
-    Column('contacto',Unicode(100)))
+    Column('numcel',String(11),nullable=False),
+    Column('grupo',ForeignKey("grupos.id")),
+    Column('contacto',Unicode(100),nullable=False),
+    )
 
 
-#Definicion de la tabla bitacora
 bitacora = Table(
     'bitacora',metadata,
     Column('id',Integer,primary_key=True),
-    Column('grupo',Unicode(100)),
-    Column('mensaje',Unicode(144)),
-    Column('timestamp',TIMESTAMP(), default=now()),
-    Column('numcel',String(11)),
-    Column('estatus',Boolean,default=False))
+    Column('mensaje',ForeignKey("mensajes.id")),
+    Column('grupo',ForeignKey("grupos.id")),
+    Column('numcel',String(11),nullable=False),
+    Column('contacto',ForeignKey("contactos.id")),
+    Column('timestamp',TIMESTAMP()),
+    Column('estatus',Boolean,default=False)
+)
 
 
 
