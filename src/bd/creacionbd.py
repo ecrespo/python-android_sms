@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-from sqlalchemy import *
+import sqlalchemy
 import datetime
 
 #Se crea la instancia de la base de datos.
