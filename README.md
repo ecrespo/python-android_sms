@@ -31,3 +31,10 @@ Las tablas que se van a crear son las siguientes:
 + Dispositivos: Tabla que registra los dispositivos celulares Android conectados y si están disponibles para ser usados (id, dispositivo, descripcion,estatus).
 + Grupos: Tabla que registra los grupos (id,nombre, descripcion).
 
+## 3.0. Pruebas
+
+A continuación coloco enlaces de las herramientas que soporta github:
+[![Test Coverage](https://codeclimate.com/github/ecrespo/python-android_sms/badges/coverage.svg)](https://codeclimate.com/github/ecrespo/python-android_sms/coverage)
+
+[![Issue Count](https://codeclimate.com/github/ecrespo/python-android_sms/badges/issue_count.svg)](https://codeclimate.com/github/ecrespo/python-android_sms)
+
