@@ -23,7 +23,7 @@ mensajes_table = schema.Table('mensajes',metadata,
     schema.Column('texto',types.Unicode(100),nullable=False),
     )
 
-responsables_table = schema.Table('responsable',metadata,
+responsables_table = schema.Table('responsables',metadata,
     schema.Column('responsable',types.Unicode(100),nullable=False,primary_key=True),
     schema.Column('correo',types.String(60),key='email'),
     schema.Column('celular',types.String(11),nullable=False)
