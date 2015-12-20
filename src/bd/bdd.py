@@ -37,7 +37,7 @@ sm = orm.sessionmaker(bind=engine, autoflush=True, autocommit=False, expire_on_c
 session = orm.scoped_session(sm)
 
 
-class Crud:
+class Crud(object):
 	def __init__(self):
 		pass
 
