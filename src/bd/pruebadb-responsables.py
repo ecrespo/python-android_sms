@@ -26,11 +26,20 @@ session = orm.scoped_session(sm)
 #Insertar un responsable:
 responsable = model.Responsables()
 
+
+responsable.responsable= u"Dayana Carolina"
+responsable.correo = "dayana@gmail.com"
+responsable.celular = "04162737373"
+session.add(responsable)
+
+session.flush()
+
+session.commit()
+
 responsable.responsable = u"Ernesto Crespo"
 
-responsable.celular = u"04265673018"
-responsable.correo = u"ecrespo@gmail.com"
-print (type(responsable))
+responsable.celular = "04265673018"
+responsable.correo = "ecrespo@gmail.com"
 
 session.add(responsable)
 
@@ -51,5 +60,5 @@ consulta = session.query(model.Responsables).all()
 
 for lista in consulta:
 
-    print (lista.responsable,lista.celular,lista.correo)
+    print lista
 
