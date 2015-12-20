@@ -65,12 +65,25 @@ bitacora_table = schema.Table('bitacora',metadata,
 )
 
 #Asociacion de las tablas al orm
-class Mensajes(object): pass
-class Contactos(object): pass
-class Bitacora(object): pass
-class Dispositivos(object): pass
-class Grupos(object): pass
-class Responsables(object): pass
+class Mensajes(object):
+    """Clase Mensajes"""
+    pass
+class Contactos(object):
+    """Clase contactos"""
+    pass
+
+class Bitacora(object):
+    """Clase Bitacora"""
+    pass
+class Dispositivos(object):
+    """Clase dispositivos"""
+    pass
+class Grupos(object):
+    """Clase grupos"""
+    pass
+class Responsables(object):
+    """clase responsables"""
+    pass
 
 orm.mapper(Contactos, contactos_table)
 orm.mapper(Mensajes,mensajes_table)
