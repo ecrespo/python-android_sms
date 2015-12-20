@@ -12,8 +12,9 @@ db.echo = False
 #Se instancia metadato.
 metadata = MetaData(db)
 
-#Funcion que devuelve la hora en el momento que se ejecuta la funcion.
+#
 def now():
+    """Funcion que devuelve la hora en el momento que se ejecuta la funcion."""
     return datetime.datetime.now()
 
 
