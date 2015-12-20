@@ -38,6 +38,7 @@ session = orm.scoped_session(sm)
 
 
 class Crud(object):
+	"""Clase que permite hacer las operaciones basicas en base de datos""" 
 	def __init__(self):
 		pass
 
