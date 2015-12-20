@@ -11,8 +11,9 @@ from sqlalchemy.orm import validates
 #Se define metadato.
 metadata = schema.MetaData()
 
-#Se define la funcion que devuelve la hora en el momento de ejecutar
+#
 def now():
+    """Se define la funcion que devuelve la hora en el momento de ejecutar"""
 
     return datetime.datetime.now()
 
