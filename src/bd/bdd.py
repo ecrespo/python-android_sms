@@ -11,6 +11,7 @@ import datetime
 
 
 def now():
+	"""Retorna la fecha y hora actual"""
 
     return datetime.datetime.now()
 
@@ -44,6 +45,7 @@ class Crud(object):
 
 	@staticmethod
 	def consulta(tabla):
+		"""Hace consulta en la tabla"""
 		if tabla == "Contactos":
 			consulta = session.query(model.Contactos).all()
 		elif tabla == "Grupos":
@@ -57,6 +59,7 @@ class Crud(object):
 
 	@staticmethod
 	def agregar(tabla,dato):
+		"""Agrega datos a la tabla"""
 
 		if tabla == "Contactos":
 			contacto = model.Contactos()
@@ -87,6 +90,7 @@ class Crud(object):
 
     @staticmethod
     def borrar_grupo_contactos(grupo):
+    	"""Borra un grupo de contactos de la tabla grupo"""
         consulta = session.query(model.Contactos).filter(model.Contactos.grupo == grupo).all()
         for cons in consulta:
         	session.delete(cons)
@@ -95,6 +99,7 @@ class Crud(object):
 
 	@staticmethod
 	def borrar(tabla,dato):
+		"""Borra un dato de una tabla"""
 		if tabla == "Contactos":
 			consulta = session.query(model.Contactos).filter(model.Contactos.contacto == dato["contacto"]).one()
 		elif tabla == "Grupos":
