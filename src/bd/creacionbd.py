@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sqlalchemy
+#import sqlalchemy
 import datetime
+from sqlalchemy import schema, types,ForeignKey
+from sqlalchemy.orm import validates
+from sqlalchemy import orm
+from sqlalchemy import create_engine,MetaData,Table,Column
+from sqlalchemy.types import Integer,Unicode,String,TIMESTAMP,Boolean
 
 #Se crea la instancia de la base de datos.
 db = create_engine('sqlite:///sms.db')
