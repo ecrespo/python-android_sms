@@ -4,7 +4,7 @@
 #Se importa detatime
 import datetime
 #Se importa schema y tupes de sqlalchemy
-from sqlalchemy import schema, types
+from sqlalchemy import schema, types,ForeignKey
 from sqlalchemy import orm
 from sqlalchemy.orm import validates
 
@@ -41,7 +41,7 @@ dispositivos_table = schema.Table('dispositivos',metadata,
 contactos_table = schema.Table('contactos',metadata,
     schema.Column('id',types.Integer,primary_key=True),
     schema.Column('numcel',types.String(11),nullable=False),
-    schema.Column('grupo',types.Unicode(100),nullable=False),
+    schema.Column('grupo',ForeignKey("grupos.id")),
     schema.Column('contacto',types.Unicode(100),nullable=False),
     )
 
@@ -57,9 +57,10 @@ grupos_table = schema.Table('grupos',metadata,
 #Definicion de la tabla bitacora
 bitacora_table = schema.Table('bitacora',metadata,
     schema.Column('id',types.Integer,primary_key=True),
-    schema.Column('mensaje',Unicode(144)),
-    schema.Column('grupo',Unicode(100)),
-    schema.Column('numcel',String(11)),
+    schema.Column('mensaje',ForeignKey("mensajes.id")),
+    schema.Column('grupo',ForeignKey("grupos.id")),
+    schema.Column('numcel',types.String(11),nullable=False),
+    schema.Column('contacto',ForeignKey("contactos.id")),
     schema.Column('timestamp',TIMESTAMP()),
     schema.Column('estatus',Boolean,default=False)
 )
