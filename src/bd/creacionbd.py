@@ -36,7 +36,7 @@ mensajes = Table(
 responsables = Table(
     'responsables',metadata,
     Column('responsable',Unicode(100),nullable=False,primary_key=True),
-    Column('correo',String(60),key='email',nullable=False),
+    Column('correo',String(60)),
     Column('celular',types.String(11),nullable=False)
     )
 
