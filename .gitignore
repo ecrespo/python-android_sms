@@ -2,4 +2,6 @@ dispositivos.bson
 privilegios.pyc
 *.pyc
 *.db
-
+src/bd/*.pyc
+src/ui/*.pyc
+src/*.pyc
