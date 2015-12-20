@@ -42,7 +42,8 @@ class Crud:
 	def __init__(self):
 		pass
 
-	def Consulta(self,tabla):
+	@staticmethod
+	def consulta(tabla):
 		if tabla == "Contactos":
 			consulta = session.query(model.Contactos).all()
 		elif tabla == "Grupos":
@@ -54,7 +55,8 @@ class Crud:
 
 		return consulta
 
-	def Agregar(self,tabla,dato):
+	@staticmethod
+	def agregar(tabla,dato):
 
 		if tabla == "Contactos":
 			contacto = model.Contactos()
@@ -83,14 +85,16 @@ class Crud:
 		session.flush
 		session.commit()
 
-        def BorrarGrupoContactos(self,grupo):
-            consulta = session.query(model.Contactos).filter(model.Contactos.grupo == grupo).all()
-    	    for cons in consulta:
-    	    	session.delete(cons)
-    	    	session.flush()
-    	    	session.commit()
+    @staticmethod
+    def borrar_grupo_contactos(grupo):
+        consulta = session.query(model.Contactos).filter(model.Contactos.grupo == grupo).all()
+        for cons in consulta:
+        	session.delete(cons)
+        	session.flush()
+        	session.commit()
 
-	def Borrar(self,tabla,dato):
+	@staticmethod
+	def borrar(tabla,dato):
 		if tabla == "Contactos":
 			consulta = session.query(model.Contactos).filter(model.Contactos.contacto == dato["contacto"]).one()
 		elif tabla == "Grupos":
