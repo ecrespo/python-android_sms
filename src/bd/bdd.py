@@ -6,7 +6,6 @@
 import model
 from sqlalchemy import orm
 from sqlalchemy import create_engine
-from sqlalchemy import *
 
 import datetime
 
