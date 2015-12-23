@@ -23,20 +23,23 @@ sm = orm.sessionmaker(bind=engine, autoflush=True, autocommit=False, expire_on_c
 session = orm.scoped_session(sm)
 
 
-#Insertar un responsable:
-responsable = model.Responsables()
+#Insertar Mensajes:
+mensaje1 = model.Mensajes()
+mensajes = [{"num":1,"mensaje":u"Esta es una prueba inicial"},{"num":2,"mensaje":u"prueba 2"}]
 
-responsable.responsable = u"Ernesto Crespo"
-
-responsable.celular = u"04265673018"
-responsable.correo = u"ecrespo@gmail.com"
-print (type(responsable))
-
-session.add(responsable)
-
+mensaje1.id = mensajes[0]["num"]
+mensaje1.texto = mensajes[0]["mensaje"]
+session.add(mensaje1)
 session.flush()
-
 session.commit()
+
+mensaje2 = model.Mensajes()
+mensaje2.id = mensajes[1]["num"]
+mensaje2.texto = mensajes[1]["mensaje"]
+session.add(mensaje2)
+session.flush()
+session.commit()
+
 
 
 
@@ -45,52 +48,13 @@ session.commit()
 
 #Se realiza una consulta a la tabla grupos
 
-print "Consulta inicial de la tabla contactos"
+print "Consulta inicial de la tabla mensajes"
 
-consulta = session.query(model.Contactos).all()
-
-for lista in consulta:
-
-    print lista.contacto,lista.numcel
-
-print "--------------------------------"
-
-
-
-
-
-#Agregar un contacto
-
-contacto = model.Contactos()
-
-contacto.contacto = u"Luisa Gonzalez"
-
-contacto.numcel = u"04155555555"
-print (type(contacto))
-
-session.add(contacto)
-
-session.flush()
-
-session.commit()
-
-
-#Se realiza una consulta a la tabla grupos
-
-print "Consulta la tabla contactos con el dato incorporado"
-
-consulta = session.query(model.Contactos).all()
+consulta = session.query(model.Mensajes).all()
 
 for lista in consulta:
 
-    print lista.contacto,lista.numcel
-
-print "--------------------------------"
-
-
-
-
-
+    print lista.id,lista.texto
 
 
 #Borrar un contacto
