@@ -28,20 +28,19 @@ responsable = model.Responsables()
 
 
 responsable.responsable= u"Dayana Carolina"
-responsable.correo = "dayana@gmail.com"
+responsable.correo = u"dayana@gmail.com"
 responsable.celular = "04162737373"
 session.add(responsable)
-
 session.flush()
-
 session.commit()
 
-responsable.responsable = u"Ernesto Crespo"
+responsable2 = model.Responsables()
+responsable2.responsable = u"Ernesto Crespo"
 
-responsable.celular = "04265673018"
-responsable.correo = "ecrespo@gmail.com"
+responsable2.celular = "04265673018"
+responsable2.correo = "ecrespo@gmail.com"
 
-session.add(responsable)
+session.add(responsable2)
 
 session.flush()
 
@@ -60,5 +59,5 @@ consulta = session.query(model.Responsables).all()
 
 for lista in consulta:
 
-    print lista
+    print lista.responsable,lista.celular,lista.correo
 
