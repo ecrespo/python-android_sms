@@ -58,7 +58,8 @@ grupos = Table(
 
 contactos = Table(
     'contactos',metadata,
-    Column('numcel',String(11),primary_key=True),
+    Column('id',Integer,primary_key=True),
+    Column('numcel',String(11),nullable=False),
     Column('grupo',ForeignKey("grupos.id")),
     Column('contacto',Unicode(100),nullable=False),
     )
