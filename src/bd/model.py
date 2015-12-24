@@ -30,9 +30,8 @@ responsables_table = schema.Table('responsables',metadata,
     )
 #Definicion  de la tabla dispositivos
 dispositivos_table = schema.Table('dispositivos',metadata,
-    schema.Column('id',types.Integer,primary_key=True),
-    schema.Column('dispositivo',types.Integer),
-    schema.Column('descripcion',types.Unicode(100),nullable=False),
+    schema.Column('dispositivo',types.String(16),primary_key=True),
+    schema.Column('descripcion',types.Unicode(100)),
     schema.Column('estatus',Boolean,default=False)
     )
 

@@ -42,9 +42,8 @@ responsables = Table(
 
 dispositivos = Table(
     'dispositivos',metadata,
-    Column('id',Integer,primary_key=True),
-    Column('dispositivo',Integer),
-    Column('descripcion',Unicode(100),nullable=False),
+    Column('dispositivo',String(16),primary_key=True),
+    Column('descripcion',Unicode(100)),
     Column('estatus',Boolean,default=False)
     )
 
