@@ -39,8 +39,7 @@ dispositivos_table = schema.Table('dispositivos',metadata,
 
 #Definicion de la tabla contactos
 contactos_table = schema.Table('contactos',metadata,
-    schema.Column('id',types.Integer,primary_key=True),
-    schema.Column('numcel',types.String(11),nullable=False),
+    schema.Column('numcel',types.String(11),primary_key=True),
     schema.Column('grupo',ForeignKey("grupos.id")),
     schema.Column('contacto',types.Unicode(100),nullable=False),
     )
