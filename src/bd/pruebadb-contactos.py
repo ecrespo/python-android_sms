@@ -23,21 +23,33 @@ sm = orm.sessionmaker(bind=engine, autoflush=True, autocommit=False, expire_on_c
 session = orm.scoped_session(sm)
 
 
-#Insertar un responsable:
-responsable = model.Responsables()
+#Insertar un grupo:
+grupo1 = model.Grupos()
+grupo1.id = 1
+grupo1.nombre = "Cenditel"
+grupo1.descripcion = "Grupo de trabajo de cenditel"
 
-responsable.responsable = u"Ernesto Crespo"
-
-responsable.celular = u"04265673018"
-responsable.correo = u"ecrespo@gmail.com"
-print (type(responsable))
-
-session.add(responsable)
+session.add(grupo1)
 
 session.flush()
 
 session.commit()
 
+grupo2 = model.Grupos()
+grupo2.id = 2
+grupo2.nombre = "Galba"
+grupo2.descripcion = "Grupo de trabajo de galba"
+session.add(grupo2)
+session.flush()
+session.commit()
+
+grupo3 = model.Grupos()
+grupo3.id = 3
+grupo3.nombre = "DST"
+grupo3.descripcion = "Grupo de trabajo de DST"
+session.add(grupo3)
+session.flush()
+session.commit()
 
 
 
@@ -47,57 +59,50 @@ session.commit()
 
 print "Consulta inicial de la tabla contactos"
 
-consulta = session.query(model.Contactos).all()
+consulta = session.query(model.Grupos).all()
 
 for lista in consulta:
 
-    print lista.contacto,lista.numcel
+    print lista.id,lista.nombre,lista.descripcion
 
 print "--------------------------------"
 
-
-
-
-
-#Agregar un contacto
-
-contacto = model.Contactos()
-
-contacto.contacto = u"Luisa Gonzalez"
-
-contacto.numcel = u"04155555555"
-print (type(contacto))
-
-session.add(contacto)
-
+#Agregar contactos.
+contacto1 = model.Contactos()
+contacto1.id = 1
+contacto1.numcel = "04265673018"
+contacto1.grupo = grupo1.id
+contacto1.contacto = "Ernesto Crespo"
+session.add(contacto1)
 session.flush()
-
 session.commit()
 
+contacto2 = model.Contactos()
+contacto2.id = 2
+contacto2.numcel = "04265673019"
+contacto2.grupo = grupo2.id
+contacto2.contacto = "Dayana Ovalle"
+session.add(contacto2)
+session.flush()
+session.commit()
 
-#Se realiza una consulta a la tabla grupos
+contacto3 = model.Contactos()
+contacto3.id = 3
+contacto3.numcel = "04265673020"
+contacto3.grupo = grupo3.id
+contacto3.contacto = "Luissana Torres"
+session.add(contacto3)
+session.flush()
+session.commit()
 
-print "Consulta la tabla contactos con el dato incorporado"
+#Se realiza una consulta a la tabla contactos
+
+print "Consulta inicial de la tabla contactos"
 
 consulta = session.query(model.Contactos).all()
 
 for lista in consulta:
 
-    print lista.contacto,lista.numcel
+    print lista.id,lista.numcel,lista.grupo,lista.contacto
 
 print "--------------------------------"
-
-
-
-
-
-
-
-#Borrar un contacto
-#session.delete(contacto)
-
-#session.flush()
-
-#session.commit()
-
-
