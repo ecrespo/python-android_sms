@@ -60,7 +60,7 @@ contactos = Table(
     'contactos',metadata,
     Column('id',Integer,primary_key=True),
     Column('numcel',String(11),nullable=False),
-    Column('grupo',ForeignKey("grupos.id")),
+    Column('grupo',Integer,nullable=False),
     Column('contacto',Unicode(100),nullable=False),
     )
 
@@ -68,10 +68,10 @@ contactos = Table(
 bitacora = Table(
     'bitacora',metadata,
     Column('id',Integer,primary_key=True),
-    Column('mensaje',ForeignKey("mensajes.id")),
-    Column('grupo',ForeignKey("grupos.id")),
+    Column('mensaje',Integer,nullable=False),
+    Column('grupo',Integer,nullable=False),
     Column('numcel',String(11),nullable=False),
-    Column('contacto',ForeignKey("contactos.id")),
+    Column('contacto',Integer,nullable=False),
     Column('timestamp',TIMESTAMP()),
     Column('estatus',Boolean,default=False)
 )

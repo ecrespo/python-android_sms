@@ -41,7 +41,7 @@ dispositivos_table = schema.Table('dispositivos',metadata,
 contactos_table = schema.Table('contactos',metadata,
     schema.Column('id',types.Integer,primary_key=True),
     schema.Column('numcel',types.String(11),nullable=False),
-    schema.Column('grupo',ForeignKey("grupos.id")),
+    schema.Column('grupo',types.Integer,nullable=False),
     schema.Column('contacto',types.Unicode(100),nullable=False),
     )
 
@@ -57,10 +57,10 @@ grupos_table = schema.Table('grupos',metadata,
 #Definicion de la tabla bitacora
 bitacora_table = schema.Table('bitacora',metadata,
     schema.Column('id',types.Integer,primary_key=True),
-    schema.Column('mensaje',ForeignKey("mensajes.id")),
-    schema.Column('grupo',ForeignKey("grupos.id")),
+    schema.Column('mensaje',types.Integer,nullable=False),
+    schema.Column('grupo',types.Integer,nullable=False),
     schema.Column('numcel',types.String(11),nullable=False),
-    schema.Column('contacto',ForeignKey("contactos.id")),
+    schema.Column('contacto',types.Integer,nullable=False),
     schema.Column('timestamp',TIMESTAMP()),
     schema.Column('estatus',Boolean,default=False)
 )
