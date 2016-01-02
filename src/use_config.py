@@ -17,27 +17,33 @@ Version: 0.2
 
 #Clase config
 class Config(object):
+    """Clase Config: facilita el uso del modulo ConfigParser"""
 
     def __init__(self, cnffile):
+        """Constructor toma el archivo de configuracion e inicializa ConfigParser"""
         self._cnffile = cnffile
         self._config = ConfigParser()
         self._config.read(self._cnffile)
 
 
-#Se define la funcion que muestra los item de una seccion
+#
     def ShowItemSection(self, section):
+        """Se define la funcion que muestra los item de una seccion"""
         return self._config.items(section)
 
-#Se muestra el valor de los item
+#
     def ShowValueItem(self, section, option):
+        """Se muestra el valor de los item"""
         return self._config.get(section, option)
 
-#Se cambia el valor de la opcion
+#
     def change(self, section, option, value):
+        """Se cambia el valor de la opcion"""
         self._config.set(section, option, value)
 
-#Se escribe al archivo de configuracion
+#
     def write(self):
+        """Se escribe al archivo de configuracion"""
         self._config.write(open(self._cnffile,'w'))
 
 
