@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
@@ -15,24 +15,23 @@ email: ecrespo@gmail.com
 
 import re, sys 
 
-class validar(object):
-	def __init__(self):
+class Validar(object):
+
+    def __init__(self):
 		pass
 
-
-	def NumCel(self,numero):
-		 if len(numero) == 11 and \
-                ((re.search("041[2|4|6]\d\d\d\d\d\d\d",numero)) or \
-                    (re.search("042[4|6]\d\d\d\d\d\d\d",numero))) :
+    @staticmethod
+    def num_cel(num):
+        if ((len(num) == 11) and (re.search("041[2|4|6]\d\d\d\d\d\d\d",num) or re.search("042[4|6]\d\d\d\d\d\d\d",num))):
             return True
         else:
             return False
 
 
-    def NumFijo(self,numero):
-    	pass
-
     	
 
-
+if __name__ == '__main__':
+    validar = Validar()
+    print(validar.num_cel("04265673018"))
+    print(validar.num_cel("04277338282"))
 
