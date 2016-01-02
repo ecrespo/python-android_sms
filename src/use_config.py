@@ -27,12 +27,12 @@ class Config(object):
 
 
 #
-    def ShowItemSection(self, section):
+    def show_item_section(self, section):
         """Se define la funcion que muestra los item de una seccion"""
         return self._config.items(section)
 
 #
-    def ShowValueItem(self, section, option):
+    def show_value_item(self, section, option):
         """Se muestra el valor de los item"""
         return self._config.get(section, option)
 
@@ -50,5 +50,5 @@ class Config(object):
 
 if __name__ == '__main__':
     configuracion = Config("./conf/androidsms.conf")
-    print(configuracion.ShowItemSection("server"))
-    print(configuracion.ShowValueItem("server","ip"))
+    print(configuracion.show_item_section("server"))
+    print(configuracion.show_value_item("server","ip"))
