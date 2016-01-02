@@ -27,6 +27,10 @@ class Config(object):
 
 
 #
+    def show_sections(self):
+        """Muestra las secciones del archivo de configuracion"""
+        return self._config.sections()
+
     def show_item_section(self, section):
         """Se define la funcion que muestra los item de una seccion"""
         return self._config.items(section)
@@ -50,5 +54,6 @@ class Config(object):
 
 if __name__ == '__main__':
     configuracion = Config("./conf/androidsms.conf")
+    print(configuracion.show_sections())
     print(configuracion.show_item_section("server"))
     print(configuracion.show_value_item("server","ip"))
