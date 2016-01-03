@@ -5,8 +5,8 @@
 """
 Name: privilegios
 Description: Modulo que permite la ejecución de comandos como root
-Version:0.3
-License: GPLv3
+Version:0.4
+Licencia: GPLv3
 Copyright: Copyright (C) 2011 Ernesto Nadir Crespo Avila
 Author: Ernesto Nadir Crespo Avila
 Email: ecrespo@gmail.com
@@ -17,16 +17,31 @@ Email: ecrespo@gmail.com
 import os 
 
 
-def ejecutar(comando):
-    resultado = os.popen("sudo %s" %comando).readlines()
-    return resultado
-
-
-def AgregarUsuarioSudo(usuario):
-    ejecutar("echo \"%s ALL=(ALL) ALL\" >>  /etc/sudoers " %usuario)
+class Privilegio(object):
+    """Clase privilegio que permite ejecutar comandos como root y permite agregar un usuario al sudo"""
     
+    def __init__(self,usuario):
+        """Constructor que toma un usuario a usar los privilegios"""
+        self._usuario = usuario
+
+    def __getattr__(self,attr):
+        """__getattr__ devuelve none"""
+        return None
+
+
+    @staticmethod
+    def ejecutar_comando(comando):
+        """ejecuta un comando con privilegios usando sudo"""
+	resultado = os.popen("sudo %s" %comando).readlines()
+    	return resultado
+
+    def agregar_usuario_sudo(self):
+        """Agrega el usuario a los sudoers"""
+    	ejecutar("echo \"%s ALL=(ALL) ALL\" >>  /etc/sudoers " %self._usuario)
+
 
     
     
 if __name__ == "__main__":
-    print ejecutar("adb devices")
+    privilegio = Privilegio("ernesto")
+    print (privilegio.ejecutar_comando("adb devices"))
