@@ -24,7 +24,7 @@ class Privilegio(object):
         """Constructor que toma un usuario a usar los privilegios"""
         self._usuario = usuario
 
-    def __getattr__(self,attr):
+    def __getattr__(self):
         """__getattr__ devuelve none"""
         return None
 
@@ -32,12 +32,12 @@ class Privilegio(object):
     @staticmethod
     def ejecutar_comando(comando):
         """ejecuta un comando con privilegios usando sudo"""
-	resultado = os.popen("sudo %s" %comando).readlines()
+	resultado = os.popen("sudo {0}".format(comando)).readlines()
     	return resultado
 
     def agregar_usuario_sudo(self):
         """Agrega el usuario a los sudoers"""
-    	ejecutar("echo \"%s ALL=(ALL) ALL\" >>  /etc/sudoers " %self._usuario)
+    	ejecutar("echo \"{0} ALL=(ALL) ALL\" >>  /etc/sudoers ".format(self._usuario))
 
 
     
