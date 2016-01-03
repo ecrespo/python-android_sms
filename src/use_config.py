@@ -25,8 +25,10 @@ class Config(object):
         self._config = ConfigParser()
         self._config.read(self._cnffile)
 
+    def __getattr__(self):
+        """__getattr__ devuelve None si se trata de acceder a un atributo que no existe"""
+        return None 
 
-#
     def show_sections(self):
         """Muestra las secciones del archivo de configuracion"""
         return self._config.sections()
