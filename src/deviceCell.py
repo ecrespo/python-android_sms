@@ -28,16 +28,18 @@ class Cell(object):
         self.__archivo_conf = archivo_conf
         self.__estado = False
         
-    def __getattr(self):
+    def __getattr__(self):
         """Devuelve None de atributos que no existen"""
         return None 
 
     @property
     def archivo_conf(self):
+        """property de gettter"""
         return self._archivo_conf
 
     @archivo_conf.setter
     def archivo_conf(self,archivo_conf):
+        """property de setter"""
         self.__archivo_conf = archivo_conf
         self.__estado = False
 
