@@ -6,7 +6,7 @@ Name: privilegios
 Description: Modulo que permite detectar que el dispositivo este conectado y si no se reconfigura, adicionalmente pasa la informacion
 del dispositivo (sólo para dispositivos android por medio de adb)
 
-Version:0.3
+Version:0.5
 License: GPLv3
 Copyright: Copyright (C) Ernesto Nadir Crespo Avila
 Author: Ernesto Nadir Crespo Avila
@@ -17,43 +17,30 @@ Email: ecrespo@gmail.com
 from os import path
 from privilegios import ejecutar, AgregarUsuarioSudo
 from commands import getstatusoutput
-from bson import BSON
-import bson
+
 
 class Cell(object):
-    def __init__(self,archivo_conf,archivo_bson):
+    def __init__(self,archivo_conf):
         """
         Se capturan los valores del archivo de configuracion y se asigna los valores a
         los datos del objeto Cell
         """
         self.__archivo_conf = archivo_conf
-        self.__archivo_bson = archivo_bson
         self.__estado = False
         
-        
-    
-            
-    def guardar_dispositivo(self,archivobson):
-        """Se guarda el estado de los dispositivos android en una tabla"""
-        if self.__estado == False: return False
-        lista_dispositivos = self.detectar_dispositivos()
-        f = open(archivobson, 'a+')
-        try:
-            for dispositivo in lista_dispositivos:
-                f.write(BSON.encode(dispositivo))
-        finally:
-            f.close()
+    def __getattr(self):
+        """Devuelve None de atributos que no existen"""
+        return None 
 
-    #@staticmethod
-    def leer_dispositivos(self):
-        """Lee del archivo bson los dispositivos almacenados"""
-        if self.__estado == False: return False
-        f = open(self.__archivo_bson, 'rb')
-        result = bson.decode_all(f.read())
-        return result
+    @property
+    def archivo_conf(self):
+        return self._archivo_conf
 
+    @archivo_conf.setter
+    def archivo_conf(self,archivo_conf):
+        self.__archivo_conf = archivo_conf
+        self.__estado = False
 
-        
         
     
     def detectar_dispositivos(self):
@@ -82,7 +69,7 @@ class Cell(object):
 
 if __name__ == "__main__":
     
-    cel = Cell(".../conf/config-sms.conf","../bd/dispositivos.bson")
+    cel = Cell(".../conf/config-sms.conf")
     print "Deteccion de dispositivo",cel.detectarDispositivos()
     cel.guardar_dispositivo()
     cel.leer_dispositivos()
