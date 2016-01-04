@@ -28,6 +28,15 @@ class Privilegio(object):
         """__getattr__ devuelve none"""
         return None
 
+    @property
+    def usuario(self):
+        return self._usuario
+
+    @usuario.setter
+    def usuario(self,usuario):
+        self._usuario = usuario
+    
+
 
     @staticmethod
     def ejecutar_comando(comando):
@@ -45,3 +54,6 @@ class Privilegio(object):
 if __name__ == "__main__":
     privilegio = Privilegio("ernesto")
     print (privilegio.ejecutar_comando("adb devices"))
+    print(privilegio.usuario)
+    privilegio.usuario = "dayana"
+    print(privilegio.usuario)
