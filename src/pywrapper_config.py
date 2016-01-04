@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#import ConfigParser
 from ConfigParser import ConfigParser
 
 """
@@ -27,10 +26,12 @@ class Config(object):
 
     @property
     def cnffile(self):
+        """Se consulta el valor del archivo de configuracion"""
         return self._cnffile
     
     @cnffile.setter
     def cnffile(self,cnffile):
+        """Se modifica el valor del archivo de configuración y se vuelve a leer el mismo"""
         self._cnffile = cnffile
         self._config.read(self._cnffile)
 
