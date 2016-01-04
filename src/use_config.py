@@ -25,6 +25,15 @@ class Config(object):
         self._config = ConfigParser()
         self._config.read(self._cnffile)
 
+    @property
+    def cnffile(self):
+        return self._cnffile
+    
+    @cnffile.setter
+    def cnffile(self,cnffile):
+        self._cnffile = cnffile
+        self._config.read(self._cnffile)
+
     def __getattr__(self):
         """__getattr__ devuelve None si se trata de acceder a un atributo que no existe"""
         return None 
@@ -59,3 +68,8 @@ if __name__ == '__main__':
     print(configuracion.show_sections())
     print(configuracion.show_item_section("server"))
     print(configuracion.show_value_item("server","ip"))
+    print(configuracion.cnffile)
+    configuracion.cnffile = "./conf/python_android_sms.conf"
+    print(configuracion.cnffile)
+    print(configuracion.show_sections())
+
