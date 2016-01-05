@@ -15,6 +15,8 @@ Email: ecrespo@gmail.com
 
 
 import os 
+from os import popen
+from commands import getstatusoutput
 
 
 class Privilegio(object):
@@ -39,10 +41,17 @@ class Privilegio(object):
 
 
     @staticmethod
-    def ejecutar_comando(comando):
+    def ejecutar_comando_sudo(comando):
         """ejecuta un comando con privilegios usando sudo"""
 	resultado = os.popen("sudo {0}".format(comando)).readlines()
     	return resultado
+
+    @staticmethod
+    def ejecutar_comando(comando):
+        """Ejecutar comando en modo root"""
+        resultado = getstatusoutput("{0}".format(comando))
+        return resultado
+
 
     def agregar_usuario_sudo(self):
         """Agrega el usuario a los sudoers"""
@@ -53,7 +62,8 @@ class Privilegio(object):
     
 if __name__ == "__main__":
     privilegio = Privilegio("ernesto")
-    print (privilegio.ejecutar_comando("adb devices"))
-    print(privilegio.usuario)
-    privilegio.usuario = "dayana"
-    print(privilegio.usuario)
+    print("{0}".format(privilegio.ejecutar_comando("adb devices")))
+    #print (privilegio.ejecutar_comando("adb devices"))
+    #print(privilegio.usuario)
+    #privilegio.usuario = "dayana"
+    #print(privilegio.usuario)
