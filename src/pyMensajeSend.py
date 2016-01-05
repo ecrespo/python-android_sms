@@ -10,7 +10,6 @@ Author: Ernesto Nadir Crespo Avila
 Email: ecrespo@gmail.com
 version: 0.4
 """
-import serial
 from commands import getstatusoutput
 from deviceCell import Cell
 import android
