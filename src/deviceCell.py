@@ -14,44 +14,45 @@ Email: ecrespo@gmail.com
 """
 
 #import config
-from os import path
-from privilegios import ejecutar, AgregarUsuarioSudo
+from os import path,environ
+from privilegios import Privilegios
 from commands import getstatusoutput
 
 
 class Cell(object):
-    def __init__(self,archivo_conf):
+    def __init__(self):
         """
         Se capturan los valores del archivo de configuracion y se asigna los valores a
         los datos del objeto Cell
         """
-        self.__archivo_conf = archivo_conf
-        self.__estado = False
+        
+        self._estado = False
+        self._usuario = environ["USERNAME"]
+        self._privilegio = Privilegios(self._usuario) 
         
     def __getattr__(self):
         """Devuelve None de atributos que no existen"""
         return None 
 
     @property
-    def archivo_conf(self):
-        """property de gettter"""
-        return self._archivo_conf
-
-    @archivo_conf.setter
-    def archivo_conf(self,archivo_conf):
-        """property de setter"""
-        self.__archivo_conf = archivo_conf
-        self.__estado = False
-
-        
+    def usuario(self):
+        """getter del usuario que esta ejecutando la aplicacion"""
+        return self._usuario
     
+    @usuario.setter
+    def usuario(self,usuario):
+        """se asigna un nuevo usuario"""
+        self._usuario = usuario
+        self._privilegio = Privilegios(self._usuario)
+
+
     def detectar_dispositivos(self):
         """Detecta los dispositivos android conectados al computador por medio de adb"""
-        resultados = ejecutar("adb devices")
-        self.__lista_dispositivos = []
+        resultados = self._privilegio.ejecutar("adb devices")
+        self._lista_dispositivos = []
         if len(resultados) == 2:
-            self.__estado = False
-            return False
+            self._estado = False
+            return {"estado":self._estado,"elementos":[]}
         elif len(resultados) > 2:
             for dispositivos in resultados[1:-1]:
                 dispositivo = dispositivos[:-1].split("\t")[0]
@@ -60,18 +61,18 @@ class Cell(object):
                     estado_dispositivo = u'activo'
                 else:
                     estado_dispositivo = u'inactivo'
-                self.__lista_dispositivos.append({"dispositivo": dispositivo,"estado": estado_dispositivo})
-            self.__estado = True
-            return self.__lista_dispositivos
+                self._lista_dispositivos.append({"dispositivo": dispositivo,"estado": estado_dispositivo})
+            self._estado = True
+            return {"estado":self._estado,"elementos":self.__lista_dispositivos}
         else:
-            self.__estado = False
-            return False
+            self._estado = False
+            return {"estado":self._estado,"elementos":[]}
 
-            
+    
 
 if __name__ == "__main__":
     
-    cel = Cell(".../conf/config-sms.conf")
+    cel = Cell()
     print "Deteccion de dispositivo",cel.detectarDispositivos()
     cel.guardar_dispositivo()
     cel.leer_dispositivos()
