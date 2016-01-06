@@ -12,10 +12,11 @@ from pywrapper_config import Config
 from deviceCell import Servicio
 from sys import exit
 
-configfile = "./conf/devicecelldaemond.conf"
+configfile = "./conf/devicecelldaemon.conf"
 
 
-class app_demonio(object):
+class AppDemonio(object):
+    """clase que inicia el demonio de la aplicacion"""
     def __init__(self,config_file):
         """se define unos path estándar en linux."""
         self._config_file = config_file
