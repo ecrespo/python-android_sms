@@ -62,11 +62,12 @@ class AppDemonio(object):
 
     def run(self):
         """Ejecucion del demonio"""
+        cell = Cell()
+        server = SOAPServer(("localhost",8580))
+        server.registerFunction(cell.detectar_dispositivos)
         while True:
             try:
-                cell = Cell()
-                server = SOAPServer(("localhost",8580))
-                server.registerFunction(cell.detectar_dispositivos)
+                cell.config_file = configfile         
                 server.serve_forever()
                 logger.info("deviceCelldaemond started")
             except KeyboardInterrupt:

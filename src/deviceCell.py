@@ -16,9 +16,8 @@ Email: ecrespo@gmail.com
 #import config
 from os import path,environ
 from privilegios import Privilegio
-from SOAPpy import SOAPServer
-import sys 
 from string import find 
+
 class Cell(object):
     def __init__(self):
         """
