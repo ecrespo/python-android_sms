@@ -6,6 +6,8 @@ python-sqlalchemy
 python-sqlalchemy-ext 
 python3-sqlalchemy
 android-tools-adb
-python-bson
-python3-bson
+python-daemon 
+python-lockfile
+python3-zmq
+python-zmq
 
