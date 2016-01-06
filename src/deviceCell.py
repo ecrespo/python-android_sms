@@ -78,57 +78,18 @@ class Cell(object):
 
 
 
-class Servicio(object):
-    """Servicio soap para publicar si hay dispositivos o no conectados"""
-    def __init__(self,host="localhost",port=8580):
-        self._host = host
-        self._port = port
-        self._cell = Cell()
-        self._server = SOAPServer((self._host, self._port))
-        self._server.registerFunction(self._cell.detectar_dispositivos)
-
-    def __getattr__(self):
-        """devuelve none si se intenta acceder a un atributo que no existe"""
-        return None
-
-
-    @property
-    def host(self):
-        """getter del host"""
-        return self._host
-    
-    @host.setter
-    def host(self,host="localhost"):
-        """setter del host"""
-        self._host = host 
-
-    @property
-    def port(self):
-        """getter del port"""
-        return self._port
-    
-    @port.setter
-    def post(self,port):
-        """setter del puerto """
-        self._port = port
-
-    def iniciar(self):
-        """Se inicia el servicio soap"""
-        self._server.serve_forever()
-
-
 
 
 
 
 if __name__ == "__main__":
     try:
-        servicio = Servicio()
-        servicio.iniciar()
+        cell = Cell()
+        server = SOAPServer((localhost,8580))
+        server.registerFunction(cell.detectar_dispositivos)
+        server.serve_forever()
+        #servicio = Servicio()
+        #servicio.iniciar()
     except KeyboardInterrupt:
         print(u"Finalizada la aplicación")
         sys.exit()
-    
-    #cell = Cell()
-    #cell.detectar_dispositivos()
-    #print("{0}".format(cell.detectar_dispositivos()))
