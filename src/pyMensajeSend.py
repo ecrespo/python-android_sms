@@ -30,9 +30,6 @@ class AndroidSms(object):
         self._server = SOAPpy.SOAPProxy("http://localhost:8580/")
         self._privilegio = Privilegio()
 
-
-        
-
     @property
     def port(self):
         return self._port
@@ -43,10 +40,6 @@ class AndroidSms(object):
 
     def __getattr__(self):
         return None
-
-
-
-    
     
     def info_cel(self):
         """
@@ -75,16 +68,14 @@ class AndroidSms(object):
         elif r["estado"] == True:
             #El dispositivo esta activo
             #En este punto se tiene el dispositivo funcionando
-            #Tanto por wifi como por usb.
-            self._privilegio.ejecutar_comando("{0} forward tcp:9999 tcp:{1}")
-            getstatusoutput("%s  forward tcp:9999 tcp:%s" %(self.__adb,self.__puerto))
-        
-        #Se crea la variable de entorno AP_PORT
-        #para el caso conexion usb
-        getstatusoutput("export AP_PORT=\"9999\"")
-        return 1
+            self._privilegio.ejecutar_comando("adb forward tcp:9999 tcp:{1}".format(self._port))
+            #Se crea la variable de entorno AP_PORT
+            #para el caso conexion usb
+            self._privilegio.ejecutar_comando("export AP_PORT=\"9999\"")
+            return 1
 
-    def SendSMS(self,numero,mensaje):
+
+    def sms_send(self,numero,mensaje):
         
         """EnviarMensaje: Metodo que permite enviar un mensaje de texto
         pasando el numero y el mensaje
@@ -107,5 +98,5 @@ class AndroidSms(object):
 if __name__ == "__main__":
     #sms = Sms("/dev/ttyUSB0",19200)
     #sms.SendMensaje("numero","esta es una prueba")
-    Android = AndroidSms("usb","42917")
-    Android.EnvioSMS("04265673018","Hola Doris, es ernesto, avisame si te llega este sms.")
+    android = AndroidSms("usb","42917")
+    android.EnvioSMS("04265673018","Hola Doris, es ernesto, avisame si te llega este sms.")
