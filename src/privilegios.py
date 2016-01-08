@@ -22,7 +22,7 @@ from commands import getstatusoutput
 class Privilegio(object):
     """Clase privilegio que permite ejecutar comandos como root y permite agregar un usuario al sudo"""
     
-    def __init__(self,usuario):
+    def __init__(self,usuario=None):
         """Constructor que toma un usuario a usar los privilegios"""
         self._usuario = usuario
 
@@ -35,7 +35,7 @@ class Privilegio(object):
         return self._usuario
 
     @usuario.setter
-    def usuario(self,usuario):
+    def usuario(self,usuario=None):
         self._usuario = usuario
     
 
