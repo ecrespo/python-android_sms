@@ -25,7 +25,7 @@ class Privilegio(object):
     def __init__(self,usuario=None):
         """Constructor que toma un usuario a usar los privilegios"""
         self._usuario = usuario
-
+        
     def __getattr__(self):
         """__getattr__ devuelve none"""
         return None
@@ -38,8 +38,6 @@ class Privilegio(object):
     def usuario(self,usuario=None):
         self._usuario = usuario
     
-
-
     @staticmethod
     def ejecutar_comando_sudo(comando):
         """ejecuta un comando con privilegios usando sudo"""
@@ -47,10 +45,20 @@ class Privilegio(object):
     	return resultado
 
     @staticmethod
-    def ejecutar_comando(comando):
+    def ejecutar_comando_root(comando):
         """Ejecutar comando en modo root"""
         resultado = getstatusoutput("{0}".format(comando))
         return resultado
+
+    def ejecutar_comando(self,comando):
+        """Ejecutar comando dependiendo si es su o sudo"""
+        if self._usuario == None:
+            self.ejecutar_comando_root(comando)
+        else:
+            self.ejecutar_comando_sudo(comando)
+
+    
+
 
 
     def agregar_usuario_sudo(self):
@@ -61,9 +69,6 @@ class Privilegio(object):
     
     
 if __name__ == "__main__":
-    privilegio = Privilegio("ernesto")
+    privilegio = Privilegio()
     print("{0}".format(privilegio.ejecutar_comando("adb devices")))
-    #print (privilegio.ejecutar_comando("adb devices"))
-    #print(privilegio.usuario)
-    #privilegio.usuario = "dayana"
-    #print(privilegio.usuario)
+    
