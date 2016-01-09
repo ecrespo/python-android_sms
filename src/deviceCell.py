@@ -17,6 +17,8 @@ Email: ecrespo@gmail.com
 from os import path,environ
 from privilegios import Privilegio
 from string import find 
+from SOAPpy import SOAPServer
+from commands import getstatusoutput
 
 class Cell(object):
     def __init__(self):
@@ -47,8 +49,9 @@ class Cell(object):
 
     def detectar_dispositivos(self):
         """Detecta los dispositivos android conectados al computador por medio de adb"""
-        resultados = self._privilegio.ejecutar_comando("adb devices")
+        resultados = getstatusoutput("adb devices")
         lista_dispositivos = []
+        if resultados == None: return {"estado": False}
         if len(resultados[1].split("\n")) == 2:
             self._estado = False
             return {"estado":self._estado,"elementos":[]}
@@ -84,11 +87,11 @@ class Cell(object):
 if __name__ == "__main__":
     try:
         cell = Cell()
-        server = SOAPServer((localhost,8580))
+        #print(cell.detectar_dispositivos())
+        server = SOAPServer(("localhost",8580))
         server.registerFunction(cell.detectar_dispositivos)
         server.serve_forever()
-        #servicio = Servicio()
-        #servicio.iniciar()
+        
     except KeyboardInterrupt:
         print(u"Finalizada la aplicación")
         sys.exit()
