@@ -15,20 +15,19 @@ import android
 
 import SOAPpy
 from privilegios import Privilegio
-
-
+from validar_num import Validar 
+from commands import getstatusoutput
 class AndroidSms(object):
     """Clase que permite el envio de SMS solo por conexion USB"""
     def __init__(self,port,host="127.0.0.1"):
-        
         """asignacion de los valores a los datos del objeto"""
-        
         #Puerto es el numero de puerto asignado al servicio sl4a en el celular
         self._port = port
         #Host: es la IP asignada en la red wifi al celular
         self._host = host
         self._server = SOAPpy.SOAPProxy("http://localhost:8580/")
-        self._privilegio = Privilegio()
+        self._privilegio = Privilegio("ernesto")
+        self._validar = Validar()
 
     @property
     def port(self):
@@ -54,25 +53,27 @@ class AndroidSms(object):
 
 
     def __conf_ambiente_cel__(self):
+        print("Iniciando configuracion de ambiente")
         #Se apaga el servidor adb en el Linux
         self._privilegio.ejecutar_comando("adb kill-server")
         #Se borra las variables de entorno AP_PORT y AP_HOST
         self._privilegio.ejecutar_comando("export AP_PORT=\"\"")
         self._privilegio.ejecutar_comando("export AP_HOST=\"\"")
+        self._privilegio.ejecutar_comando("adb forward --remove-all")
         self._privilegio.ejecutar_comando("adb devices")
         #Se inicia el servidor adb y se verifica que funciona correctamente
-        r = self.__info_cel()
+        r = self.info_cel()
         if r["estado"] == False:
-            print "Problemas con la configuracion del celular"
-            return 0 
+            return {"estado":False,"mensaje":"Problemas con la configuracion del celular"}
         elif r["estado"] == True:
             #El dispositivo esta activo
             #En este punto se tiene el dispositivo funcionando
-            self._privilegio.ejecutar_comando("adb forward tcp:9999 tcp:{1}".format(self._port))
+            self._privilegio.ejecutar_comando("adb forward tcp:9999 tcp:{0}".format(self._port))
             #Se crea la variable de entorno AP_PORT
             #para el caso conexion usb
             self._privilegio.ejecutar_comando("export AP_PORT=\"9999\"")
-            return 1
+            return {"estado":True}
+        
 
 
     def sms_send(self,numero,mensaje):
@@ -81,22 +82,20 @@ class AndroidSms(object):
         pasando el numero y el mensaje
         Maneja ambos casos conexion USB o por red wifi.
         """
-        if self.__ValidarNumero__(numero) == 0:
-            print "Numero invalido"
-            return 0 
-        #Creando la instancia droid del objeto Android
-        self.__ConfigAndroid__()
+        if self._validar.num_cel(numero) == False:
+            return {"estado": False}
+        self.__conf_ambiente_cel__()
         #Se crea la instancia del objeto Android dependiendo si es conexion
         #wifi se le pasa el host y el puerto
         #Si es conexion USB simplemente se crea la instancia
-        droid = android.Android((self.__host,self.__puerto))
+        droid = android.Android((self._host,self._port))
         #Enviando el mensaje de texto
         droid.smsSend(numero,mensaje)
                 
 
     
 if __name__ == "__main__":
-    #sms = Sms("/dev/ttyUSB0",19200)
-    #sms.SendMensaje("numero","esta es una prueba")
-    android = AndroidSms("usb","42917")
-    android.EnvioSMS("04265673018","Hola Doris, es ernesto, avisame si te llega este sms.")
+    """socket.error: [Errno 111] Connection refused"""
+    andr = AndroidSms("55881")
+    #print(andr.info_cel())
+    andr.sms_send("04261549006","Epale Edgardo, es ernesto, avisame si te llega este sms por telegram.1")
