@@ -24,7 +24,7 @@ class Validar(object):
 
     def __init__(self):
         """constructor vacio"""
-		pass
+	pass
 
     def __getattr__(self):
         """__getattr__ devuelve None si se trata de acceder a un atributo que no existe"""
