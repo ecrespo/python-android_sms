@@ -51,7 +51,7 @@ class Cell(object):
         """Detecta los dispositivos android conectados al computador por medio de adb"""
         resultados = getstatusoutput("adb devices")
         lista_dispositivos = []
-        if resultados == None: return {"estado": False}
+        if resultados is None: return {"estado": False}
         if len(resultados[1].split("\n")) == 2:
             self._estado = False
             return {"estado":self._estado,"elementos":[]}
