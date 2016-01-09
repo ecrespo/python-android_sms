@@ -41,7 +41,7 @@ class Privilegio(object):
     @staticmethod
     def ejecutar_comando_sudo(comando):
         """ejecuta un comando con privilegios usando sudo"""
-	resultado = os.popen("sudo {0}".format(comando)).readlines()
+	resultado = getstatusoutput("sudo {0}".format(comando))
     	return resultado
 
     @staticmethod
@@ -69,6 +69,10 @@ class Privilegio(object):
     
     
 if __name__ == "__main__":
-    privilegio = Privilegio()
-    print("{0}".format(privilegio.ejecutar_comando("adb devices")))
+    privilegio = Privilegio("ernesto")
+    print(privilegio.ejecutar_comando_root("adb devices"))
+    #from os import popen
+    #from commands import getstatusoutput
+    #resultado = getstatusoutput("sudo adb devices")
+    #print(resultado)
     
