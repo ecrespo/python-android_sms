@@ -61,11 +61,11 @@ class Cell(object):
                     estado_dispositivo = linea[-1]
                     dispositivo = linea[0]
                     if estado_dispositivo == u'offline':
-                        estado = u"inactivo"
+                        estado = False
                     elif estado_dispositivo == u'device':
-                        estado = u"activo"
+                        estado = True
                     else: 
-                        estado = u"inactivo"
+                        estado = False
                     lista_dispositivos.append({"dispositivo":dispositivo,"estado":estado})
             self._estado = True
             return {"estado":self._estado,"elementos":lista_dispositivos}
