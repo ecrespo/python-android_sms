@@ -17,16 +17,15 @@ import SOAPpy
 from privilegios import Privilegio
 from validar_num import Validar 
 from commands import getstatusoutput
-class AndroidSms(object):
-    """Clase que permite el envio de SMS solo por conexion USB"""
-    def __init__(self,port,host="127.0.0.1"):
-        """asignacion de los valores a los datos del objeto"""
-        #Puerto es el numero de puerto asignado al servicio sl4a en el celular
+import os 
+import socket
+
+class sms(object):
+    """Clase que permite el envio de sms por conexion USB a celular Android"""
+    def __init__(self,port):
+        """Asignacion de valores a los atributos de la clase"""
         self._port = port
-        #Host: es la IP asignada en la red wifi al celular
-        self._host = host
         self._server = SOAPpy.SOAPProxy("http://localhost:8580/")
-        self._privilegio = Privilegio("ernesto")
         self._validar = Validar()
 
     @property
@@ -52,26 +51,26 @@ class AndroidSms(object):
             return {"dispositivos":[],"estado":False}
 
 
-    def __conf_ambiente_cel__(self):
-        print("Iniciando configuracion de ambiente")
+    def conf_ambiente_cel(self):
+        """Iniciando configuracion de ambiente"""
         #Se apaga el servidor adb en el Linux
-        self._privilegio.ejecutar_comando("adb kill-server")
+        print(getstatusoutput("sudo adb kill-server"))
         #Se borra las variables de entorno AP_PORT y AP_HOST
-        self._privilegio.ejecutar_comando("export AP_PORT=\"\"")
-        self._privilegio.ejecutar_comando("export AP_HOST=\"\"")
-        self._privilegio.ejecutar_comando("adb forward --remove-all")
-        self._privilegio.ejecutar_comando("adb devices")
+        os.environ["AP_PORT"] = ""
         #Se inicia el servidor adb y se verifica que funciona correctamente
         r = self.info_cel()
+        print(r)
         if r["estado"] == False:
             return {"estado":False,"mensaje":"Problemas con la configuracion del celular"}
         elif r["estado"] == True:
             #El dispositivo esta activo
             #En este punto se tiene el dispositivo funcionando
-            self._privilegio.ejecutar_comando("adb forward tcp:9999 tcp:{0}".format(self._port))
+            print(getstatusoutput("sudo adb devices"))
+            print(getstatusoutput("sudo adb forward tcp:9999 tcp:{0}".format(self._port)))
             #Se crea la variable de entorno AP_PORT
             #para el caso conexion usb
-            self._privilegio.ejecutar_comando("export AP_PORT=\"9999\"")
+            os.environ["AP_PORT"] = "9999"
+            print(os.environ["AP_PORT"])
             return {"estado":True}
         
 
@@ -82,20 +81,32 @@ class AndroidSms(object):
         pasando el numero y el mensaje
         Maneja ambos casos conexion USB o por red wifi.
         """
+        print("envio")
         if self._validar.num_cel(numero) == False:
+            print("Celular no conectado")
             return {"estado": False}
-        self.__conf_ambiente_cel__()
+        resultado = self.conf_ambiente_cel()
         #Se crea la instancia del objeto Android dependiendo si es conexion
         #wifi se le pasa el host y el puerto
         #Si es conexion USB simplemente se crea la instancia
-        droid = android.Android((self._host,self._port))
-        #Enviando el mensaje de texto
-        droid.smsSend(numero,mensaje)
+        if resultado["estado"] == False:
+            return {"estado":"False"}
+        else:
+            droid = android.Android()
+            #Enviando el mensaje de texto
+            droid.smsSend(numero,mensaje)
+            return {"estado":True}
                 
 
     
 if __name__ == "__main__":
-    """socket.error: [Errno 111] Connection refused"""
-    andr = AndroidSms("55881")
+    andr = sms("50097")
     #print(andr.info_cel())
-    andr.sms_send("04261549006","Epale Edgardo, es ernesto, avisame si te llega este sms por telegram.1")
+    resultado = andr.sms_send("04140447060","Epale Hector, es ernesto, avisa si llega es otro script 1")
+    if resultado["estado"] == False:
+        print("No se pudo configurar el ambiente para el envio")
+    else:
+        print("Mensaje enviado")
+
+    #except socket.error:
+    #   print("Error de conexion con el celular")
