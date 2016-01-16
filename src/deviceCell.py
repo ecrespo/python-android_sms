@@ -16,7 +16,7 @@ Email: ecrespo@gmail.com
 #import config
 from os import path,environ
 from privilegios import Privilegio
-from string import find 
+from string import find,join 
 from SOAPpy import SOAPServer
 from commands import getstatusoutput
 
@@ -63,36 +63,24 @@ class Cell(object):
         self._usuario = usuario
         self._privilegio = Privilegio(self._usuario)
 
+    def listar_forwarding(self):
+        resultados = getstatusoutput("adb forward --list")
+        print(resultados)
 
     def detectar_dispositivos(self):
         """Detecta los dispositivos android conectados al computador por medio de adb"""
-        resultados = getstatusoutput("adb devices")
+        resultados = getstatusoutput("adb devices -l")
+        lista = resultados[1].split("\n")[1].split(" ")
         lista_dispositivos = []
-        if resultados is None: return {"estado": False}
-        if len(resultados[1].split("\n")) == 2:
-            self._estado = False
-            return {"estado":self._estado,"elementos":[]}
-        elif len(resultados[1].split("\n")) > 2:
-            for dispositivos in resultados[1].split("\n")[:-1]:
-                if (find(dispositivos,"List")) <> -1:
-                    pass
-                else:
-                    linea = dispositivos.split("\t")
-                    estado_dispositivo = linea[-1]
-                    dispositivo = linea[0]
-                    if estado_dispositivo == u'offline':
-                        estado = False
-                    elif estado_dispositivo == u'device':
-                        estado = True
-                    else: 
-                        estado = False
-                    lista_dispositivos.append({"dispositivo":dispositivo,"estado":estado})
-            self._estado = True
-            return {"estado":self._estado,"elementos":lista_dispositivos}
-        else:
-            self._estado = False
-            return {"estado":self._estado,"elementos":[]}
-
+        datos = {}
+        datos["id"] = lista[0]
+        datos["device"] = lista[7]
+        datos["producto"] = lista[9].split(":")[-1]
+        arreglo = lista[10].split(":")[-1].split("_")
+        texto =  join(arreglo," ")
+        datos["modelo"] = texto
+        return {"estado": True, "dispositivo":datos}
+        
 
 
 
@@ -104,10 +92,10 @@ class Cell(object):
 if __name__ == "__main__":
     try:
         cell = Cell()
-        #print(cell.detectar_dispositivos())
-        server = SOAPServer(("localhost",8580))
-        server.registerFunction(cell.detectar_dispositivos)
-        server.serve_forever()
+        print(cell.detectar_dispositivos())
+        #server = SOAPServer(("localhost",8580))
+        #server.registerFunction(cell.detectar_dispositivos)
+        #server.serve_forever()
         
     except KeyboardInterrupt:
         print(u"Finalizada la aplicación")
