@@ -20,6 +20,23 @@ from string import find
 from SOAPpy import SOAPServer
 from commands import getstatusoutput
 
+"""
+root@d4y:/home/ernesto/proyectos/python-android_sms/src# adb forward --remove-all
+root@d4y:/home/ernesto/proyectos/python-android_sms/src# adb forward --list
+root@d4y:/home/ernesto/proyectos/python-android_sms/src# adb get-state
+device
+root@d4y:/home/ernesto/proyectos/python-android_sms/src# adb get-state
+unknown
+root@d4y:/home/ernesto/proyectos/python-android_sms/src# adb get-state
+unknown
+root@d4y:/home/ernesto/proyectos/python-android_sms/src# adb get-state
+unknown
+root@d4y:/home/ernesto/proyectos/python-android_sms/src# adb get-state
+device
+
+"""
+
+
 class Cell(object):
     def __init__(self):
         """

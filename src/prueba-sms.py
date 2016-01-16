@@ -3,14 +3,6 @@
 
 import android
 
-#!/usr/bin/env python2.6
-# -*- coding: utf-8 -*-
-#Script que permite enviar mensaje de texto a un celular android desde Linux.
-#Autor: Ernesto Crespo
-#Correo:ecrespo@gmail.com
-#Licencia: GPLv3
-#Versión:0.1
-
 #Importando el módulo android,sys y re
 import android,sys,re
 
