@@ -65,6 +65,9 @@ class AppDemonio(object):
         cell = Cell()
         server = SOAPServer(("localhost",8580))
         server.registerFunction(cell.detectar_dispositivos)
+        erver.registerFunction(cell.listar_forwarding)
+        server.registerFunction(cell.remover_forwarding)
+        server.registerFunction(cell.agregar_forwarding)
         while True:
             try:
                 cell.config_file = configfile         
