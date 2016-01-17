@@ -20,8 +20,10 @@ import os
 import socket
 import sys
 
-PORT = os.environ.get('AP_PORT')
-HOST = os.environ.get('AP_HOST')
+#PORT = os.environ.get('AP_PORT')
+#HOST = os.environ.get('AP_HOST')
+PORT="36370"
+HOST="127.0.0.1"
 HANDSHAKE = os.environ.get('AP_HANDSHAKE')
 Result = collections.namedtuple('Result', 'id,result,error')
 
