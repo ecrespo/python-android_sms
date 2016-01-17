@@ -23,12 +23,22 @@ from commands import getstatusoutput
 
 
 class Cell(object):
-    def __init__(self):
+    def __init__(self,port):
         """
         Se capturan los valores del archivo de configuracion y se asigna los valores a
         los datos del objeto Cell
         """
-        pass 
+        self._port = port
+
+    @property
+    def port(self):
+        """getter del puerto"""
+        return self._port
+    
+    @port.setter
+    def port(self,port):
+        """Setter del puerto"""
+        self._port = port
         
     def __getattr__(self):
         """Devuelve None de atributos que no existen"""
@@ -73,10 +83,11 @@ class Cell(object):
             return {"estado": False}
 
     def agregar_forwarding(self,puerto):
+        self._port= puerto
         """Agregar puerto para port forwarding"""
         detectar = self.detectar_dispositivos()
         if detectar["estado"] == False: return {"estado":False}
-        resultado = getstatusoutput("adb forward tcp:9999 tcp:{0}".format(puerto))
+        resultado = getstatusoutput("adb forward tcp:9999 tcp:{0}".format(self._port))
         if resultado[0] == 0:
             return {"estado": True}
         else:

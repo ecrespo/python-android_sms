@@ -70,6 +70,7 @@ class AppDemonio(object):
         server.registerFunction(cell.agregar_forwarding)
         server.registerFunction(cell.detener_servicio)
         server.registerFunction(cell.iniciar_servicio)
+        server.registerFunction(cell.port)
         while True:
             try:
                 cell.config_file = configfile         
