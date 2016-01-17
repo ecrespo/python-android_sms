@@ -24,6 +24,10 @@ server = SOAPpy.SOAPProxy("http://localhost:8580/")
 #Se llama las funciones registradas en el servidor SOAP
 resultado = server.detectar_dispositivos()
 if resultado["estado"] == True:
-	print ("dispositivo: {0}, estado: {1}".format(resultado["elementos"][0]["dispositivo"],resultado["elementos"][0]["estado"]))
+	print (resultado["dispositivo"])
+	print(server.agregar_forwarding(3390))
+	print(server.listar_forwarding())
+	print(server.remover_forwarding())
+	print(server.listar_forwarding())
 else:
 	print("Sin resultado")
