@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-pySMS_server: Servidor que envie sms conectadose al celular
+pySMS_cliente: Servidor que envie sms conectadose al celular
 License: GPLv3
 Copyright: Copyright (C) 2016 Ernesto Nadir Crespo Avila
 Author: Ernesto Nadir Crespo Avila
@@ -24,7 +24,7 @@ class sms(object):
     def __init__(self,port):
         """Asignacion de valores a los atributos de la clase"""
         self._port = port
-        self._server = SOAPpy.SOAPProxy("http://localhost:8580/")
+        self._cliente = SOAPpy.SOAPProxy("http://localhost:8580/")
 
         self._validar = Validar()
 
@@ -34,10 +34,10 @@ class sms(object):
 
     def _ajustar_conf(self):
         """Permite ajustar la configuracion por medio de adb"""
-        resultado = self._server.detectar_dispositivos()
+        resultado = self._cliente.detectar_dispositivos()
         if resultado["estado"] == False: return {"estado":False}
-        self._server.remover_forwarding()
-        resultado = self._server.agregar_forwarding(self._port)
+        self._cliente.remover_forwarding()
+        resultado = self._cliente.agregar_forwarding(self._port)
         return {"estado":resultado["estado"]}
 
 
@@ -46,7 +46,7 @@ class sms(object):
         Se verifica si el dispositivo existe.
         si no se levanta el dispositivo.
         """
-        resultado = self._server.detectar_dispositivos()
+        resultado = self._cliente.detectar_dispositivos()
         if resultado["estado"] == True:
             return resultado["dispositivo"]
         else:
