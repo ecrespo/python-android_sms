@@ -68,6 +68,8 @@ class AppDemonio(object):
         server.registerFunction(cell.listar_forwarding)
         server.registerFunction(cell.remover_forwarding)
         server.registerFunction(cell.agregar_forwarding)
+        server.registerFunction(cell.detener_servicio)
+        server.registerFunction(cell.iniciar_servicio)
         while True:
             try:
                 cell.config_file = configfile         

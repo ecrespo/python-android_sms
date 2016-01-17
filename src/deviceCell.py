@@ -34,6 +34,23 @@ class Cell(object):
         """Devuelve None de atributos que no existen"""
         return None 
 
+    def detener_servicio(self):
+        """Detiene el servicio de adb"""
+        resultado = getstatusoutput("adb kill-server")
+        if resultado[0] == 0:
+            return {"estado":True}
+        else:
+            return {"estado": False}
+
+    def iniciar_servicio(self):
+        """Inicia el servicio de adb"""
+        resultado = getstatusoutput("adb start-server")
+        if resultado[0] == 0:
+            return {"estado":True}
+        else:
+            return {"estado": False}
+
+
 
     def listar_forwarding(self):
         """listar el port forwarding de adb"""
@@ -103,6 +120,8 @@ if __name__ == "__main__":
         server.registerFunction(cell.listar_forwarding)
         server.registerFunction(cell.remover_forwarding)
         server.registerFunction(cell.agregar_forwarding)
+        server.registerFunction(cell.detener_servicio)
+        server.registerFunction(cell.iniciar_servicio)
         server.serve_forever()
         
     except KeyboardInterrupt:
