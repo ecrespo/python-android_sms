@@ -11,15 +11,15 @@ import daemon
 
 from daemon import runner
 from pywrapper_config import Config
-from deviceCell import Cell
 from SOAPpy import SOAPServer
 import sys 
 
+from pyMensajeSend import sms
 
 
 from sys import exit
 
-configfile = "./conf/devicecelldaemon.conf"
+configfile = "./conf/android_smsd.conf"
 
 
 class AppDemonio(object):
@@ -35,6 +35,8 @@ class AppDemonio(object):
         self.pidfile_path = self._configuracion.show_value_item("paths","pidfile")
         self.pidfile_timeout = int(self._configuracion.show_value_item("time","timeout"))
         self.logfile = self._configuracion.show_value_item("paths","logfile")
+        self._port = self._configuracion.show_value_item("conexion","port")
+
 
     @property
     def config_file(self):
@@ -53,6 +55,7 @@ class AppDemonio(object):
         self._pidfile_path = self._configuracion.show_value_item("paths","pidfile")
         self._pidfile_timeout = int(self._configuracion.show_value_item("time","timeout"))
         self._logfile = self._configuracion.show_value_item("paths","logfile")
+        self._port = int(self._configuracion.show_value_item("conexion","port"))
 
 
     def __getattr__(self):
@@ -62,16 +65,16 @@ class AppDemonio(object):
 
     def run(self):
         """Ejecucion del demonio"""
-        cell = Cell()
-        server = SOAPServer(("localhost",8580))
-        server.registerFunction(cell.detectar_dispositivos)
+        sms = sms()
+        server = SOAPServer(("localhost",self._port))
+        server.registerFunction(sms.sms_send)
+        server.registerFunction(sms.info_cel)
         while True:
-            try:
-                cell.config_file = configfile         
+            try:         
                 server.serve_forever()
-                logger.info("deviceCelldaemond started")
+                logger.info("sms daemond started")
             except KeyboardInterrupt:
-                logger.info("deviceCelldaemond ended")
+                logger.info("sms daemond ended")
                 exit()
             time.sleep(self._pidfile_timeout)
 
@@ -80,7 +83,7 @@ class AppDemonio(object):
 if __name__ == "__main__":
     app = AppDemonio(configfile)
     #define la instancia de la clase logging para generar la bitacora
-    logger = logging.getLogger("devicecelldaemon log")
+    logger = logging.getLogger("sms daemon log")
     logger.setLevel(logging.INFO)
     #Se define el forma del log
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")

@@ -21,9 +21,8 @@ import socket
 
 class sms(object):
     """Clase que permite el envio de sms por conexion USB a celular Android"""
-    def __init__(self,port):
+    def __init__(self):
         """Asignacion de valores a los atributos de la clase"""
-        self._port = port
         self._cliente = SOAPpy.SOAPProxy("http://localhost:8580/")
 
         self._validar = Validar()
@@ -53,7 +52,10 @@ class sms(object):
             return {"dispositivos":[],"estado":False}
 
 
-    def sms_send(self,numero,mensaje):
+
+
+
+    def sms_send(self,port_android,numero,mensaje):
         
         """EnviarMensaje: Metodo que permite enviar un mensaje de texto
         pasando el numero y el mensaje
@@ -81,9 +83,9 @@ if __name__ == "__main__":
     else:
         print ("error enviando mensaje, se necesita pasar el puerto, numero y mensaje")
         sys.exit
-    andr = sms(port)
+    andr = sms()
     #print(andr.info_cel())
-    resultado = andr.sms_send(numero,mensaje)
+    resultado = andr.sms_send(port,numero,mensaje)
     if resultado["estado"] == False:
         print("No se pudo configurar el ambiente para el envio")
     else:
