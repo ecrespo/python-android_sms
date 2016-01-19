@@ -26,9 +26,10 @@ if __name__ == "__main__":
     import argparse
     appcli = app_cli()
     parser = argparse.ArgumentParser(description=u'Procesa envío de sms')
-    parser.add_argument('--multi', type=str, help=u'Envío de sms a multiples números celulares')
-    parser.add_argument('--single', type=int,help=u'Envío de sms a un número celular')
-    parser.add_argument('--info', help=u'Consulta información del celular')
+    parser.add_argument('-m','--multi', type=str, help=u'Envío de sms a multiples números celulares')
+    parser.add_argument('-s','--single', type=int,help=u'Envío de sms a un número celular')
+    parser.add_argument('-i','--info', default=" ",type=str, help=u'Consulta información del celular')
+    parser.add_argument('-e','--enviar', help=u'Envío del mensaje al número o números celulares')
     args = parser.parse_args()
     print(args.accumulate(args.integers))
 
