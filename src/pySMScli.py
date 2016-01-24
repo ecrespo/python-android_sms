@@ -19,6 +19,13 @@ class app_cli(object):
         """COnstrucctor"""
         pass
 
+    def multi_send(self,texto):
+        numeros = texto.split(":")
+        print(numeros)
+
+
+def multi_send(texto):
+    print (texto.split(":"))
 
 
 
@@ -26,11 +33,17 @@ if __name__ == "__main__":
     import argparse
     appcli = app_cli()
     parser = argparse.ArgumentParser(description=u'Procesa envío de sms')
-    parser.add_argument('-m','--multi', type=str, help=u'Envío de sms a multiples números celulares')
-    parser.add_argument('-s','--single', type=int,help=u'Envío de sms a un número celular')
-    parser.add_argument('-i','--info', default=" ",type=str, help=u'Consulta información del celular')
-    parser.add_argument('-e','--enviar', help=u'Envío del mensaje al número o números celulares')
+    #envio = parser.add_mutually_exclusive_group(required=True)
+    envio = parser.add_argument_group('envio')
+    info = parser.add_argument_group('info')
+    envio.add_argument('-m','--multi', type=str, dest="multi_nums", help=u'Envío de sms a multiples números celulares')
+    envio.add_argument('-s','--single', type=str,dest="single_num",help=u'Envío de sms a un número celular')
+    info.add_argument('-i','--info', action='store_false', help=u'Consulta información del celular')
+    envio.add_argument('-e','--enviar',action='store_false', help=u'Envío del mensaje al número o números celulares')
     args = parser.parse_args()
-    print(args.accumulate(args.integers))
+    if args.multi_nums != None:
+        print("~multi: {0}".format(args.multi_nums))
+    else:
+        print("~single: {0}".format(args.single_num))
 
 
