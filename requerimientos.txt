@@ -10,4 +10,5 @@ python-daemon
 python-lockfile
 python3-zmq
 python-zmq
+pywrapper_config 
 
